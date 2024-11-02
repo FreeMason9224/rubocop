@@ -10,22 +10,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  codespell:
-    name: Check spelling of all files with codespell
+  spell_check:
+    name: Spell Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codespell-project/actions-codespell@v2
+      
+      - name: Run codespell
+        uses: codespell-project/actions-codespell@v2
         with:
           check_filenames: true
           check_hidden: true
           ignore_words_file: codespell.txt
-  misspell:
-    name: Check spelling of all files in commit with misspell
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install
+          
+      - name: Install misspell
         run: wget -O - -q https://raw.githubusercontent.com/client9/misspell/master/install-misspell.sh | sh -s -- -b .
-      - name: Misspell
+
+      - name: Run misspell
         run: git ls-files --empty-directory | xargs ./misspell -i 'enviromnent' -error
